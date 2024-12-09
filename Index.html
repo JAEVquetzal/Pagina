@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Web Dinámica</title>
+  <style>
+    /* Estilo general */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: black;
+      background: url('ruta-de-tu-imagen.jpg') no-repeat center center fixed;
+      background-size: cover;
+      overflow-y: scroll; /* Mantener scroll manual activado */
+    }
+
+    .content {
+      background-color: white;
+      padding: 20px;
+      margin: 10px auto;
+      max-width: 900px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilo de filas */
+    .row {
+      margin: 20px 0;
+    }
+
+    /* Estilo de cuadros de texto */
+    .text-box {
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      text-align: justify;
+      background-color: #f0f8ff; /* Fondo personalizado */
+    }
+
+    /* Imágenes */
+    .image-box {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    /* Video */
+    video {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    /* Código */
+    pre {
+      background-color: #f4f4f4;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+
+    /* Botón de siguiente */
+    .next-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .next-button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Columna de dos imágenes */
+    .column-container {
+      display: flex;
+      gap: 10px;
+    }
+
+    .column-container img {
+      width: 50%;
+      height: auto;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    /* Botón flotante para desactivar auto scroll */
+    .stop-scroll-button {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #ff5733;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .stop-scroll-button:hover {
+      background-color: #c70039;
+    }
+
+    /* Ocultar contenido fuera de pantalla */
+    .content-hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Botón flotante para desactivar auto scroll -->
+  <button class="stop-scroll-button" onclick="toggleAutoScroll()">⏸️</button>
+  
+  <!-- Contenido principal -->
+  <div class="content">
+    <!-- Fila 1: Cabecera -->
+    <div class="row">
+      <h1>Cabecera Principal</h1>
+    </div>
+
+    <!-- Filas 2-4: Cuadros de texto -->
+    <div class="row">
+      <div class="text-box">Cuadro de texto 1</div>
+      <div class="text-box">Cuadro de texto 2</div>
+      <div class="text-box">Cuadro de texto 3</div>
+    </div>
+
+    <!-- Fila nueva: Incrustar página web -->
+    <div class="row">
+      <iframe src="https://ejemplo.com" width="100%" height="500px" style="border:1px solid #ccc; border-radius:5px;"></iframe>
+    </div>
+
+    <!-- Filas 5-6: Cuadro de imágenes -->
+    <div class="row">
+      <img src="ruta-imagen-1.jpg" alt="Imagen 1" class="image-box">
+      <img src="ruta-imagen-2.jpg" alt="Imagen 2" class="image-box">
+    </div>
+
+    <!-- Fila 7: Video -->
+    <div class="row">
+      <video controls>
+        <source src="ruta-video.mp4" type="video/mp4">
+        Tu navegador no soporta el video.
+      </video>
+    </div>
+
+    <!-- Fila 8: Código -->
+    <div class="row">
+      <pre>
+        &lt;html&gt;
+          &lt;body&gt;
+            Ejemplo de código.
+          &lt;/body&gt;
+        &lt;/html&gt;
+      </pre>
+    </div>
+
+    <!-- Fila 9: Dos columnas de imágenes -->
+    <div class="row column-container">
+      <img src="ruta-imagen-3.jpg" alt="Imagen 3">
+      <img src="ruta-imagen-4.jpg" alt="Imagen 4">
+    </div>
+
+    <!-- Fila 10: Texto -->
+    <div class="row">
+      <div class="text-box">Texto adicional en la última fila</div>
+    </div>
+  </div>
+
+  <!-- Botón de siguiente -->
+  <button class="next-button" onclick="nextPage()">Siguiente</button>
+
+  <!-- Script para scroll automático -->
+  <script>
+    let autoScroll = true;
+
+    // Activar scroll automático
+    function startAutoScroll() {
+      window.scrollBy(0, 1);
+      if (autoScroll) {
+        setTimeout(startAutoScroll, 10);
+      }
+    }
+
+    startAutoScroll();
+
+    // Alternar auto scroll
+    function toggleAutoScroll() {
+      autoScroll = !autoScroll;
+      if (autoScroll) {
+        startAutoScroll();
+      }
+    }
+
+    // Ocultar contenido que no está en pantalla
+    const content = document.querySelector('.content');
+    window.addEventListener('scroll', () => {
+      const rows = content.querySelectorAll('.row');
+      rows.forEach(row => {
+        const rect = row.getBoundingClientRect();
+        if (rect.top >= window.innerHeight || rect.bottom <= 0) {
+          row.classList.add('content-hidden');
+        } else {
+          row.classList.remove('content-hidden');
+        }
+      });
+    });
+
+    // Función para el botón de siguiente
+    function nextPage() {
+      alert('Ir a la siguiente página o realizar acción.');
+    }
+  </script>
+</body>
+        </html>
